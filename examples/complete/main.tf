@@ -8,7 +8,7 @@ module "vpc" {
 
   ipv4_primary_cidr_block = "172.19.0.0/16"
 
-  context = module.this.context
+  context = module.context.self
 }
 
 module "subnet" {
@@ -22,7 +22,7 @@ module "subnet" {
   nat_gateway_enabled  = false
   nat_instance_enabled = false
 
-  context = module.this.context
+  context = module.context.self
 }
 
 module "security_group" {
@@ -48,7 +48,7 @@ module "security_group" {
     }
   ]
 
-  context = module.this.context
+  context = module.context.self
 }
 
 module "redshift_cluster" {
@@ -66,5 +66,5 @@ module "redshift_cluster" {
   publicly_accessible   = var.publicly_accessible
   allow_version_upgrade = var.allow_version_upgrade
 
-  context = module.this.context
+  context = module.context.self
 }
