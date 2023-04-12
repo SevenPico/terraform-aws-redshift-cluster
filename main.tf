@@ -1,11 +1,11 @@
 locals {
-  enabled = module.this.enabled
+  enabled = module.context.enabled
 }
 
 resource "aws_redshift_cluster" "default" {
   count = local.enabled ? 1 : 0
 
-  cluster_identifier = var.cluster_identifier == "" ? module.this.id : var.cluster_identifier
+  cluster_identifier = var.cluster_identifier == "" ? module.context.id : var.cluster_identifier
   database_name      = var.database_name
   master_username    = var.admin_user
   master_password    = var.admin_password
@@ -47,23 +47,23 @@ resource "aws_redshift_cluster" "default" {
     aws_redshift_parameter_group.default
   ]
 
-  tags = module.this.tags
+  tags = module.context.tags
 }
 
 resource "aws_redshift_subnet_group" "default" {
   count = local.enabled ? 1 : 0
 
-  name        = module.this.id
+  name        = module.context.id
   subnet_ids  = var.subnet_ids
   description = "Allowed subnets for Redshift Subnet group"
 
-  tags = module.this.tags
+  tags = module.context.tags
 }
 
 resource "aws_redshift_parameter_group" "default" {
   count = local.enabled ? 1 : 0
 
-  name   = module.this.id
+  name   = module.context.id
   family = "redshift-1.0"
 
   dynamic "parameter" {
@@ -74,5 +74,5 @@ resource "aws_redshift_parameter_group" "default" {
     }
   }
 
-  tags = module.this.tags
+  tags = module.context.tags
 }
