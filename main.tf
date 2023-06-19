@@ -3,6 +3,10 @@ locals {
 }
 
 resource "aws_redshift_cluster" "default" {
+  #checkov:skip=CKV_AWS_321:skipping 'Ensure Redshift clusters use enhanced VPC routing' because it can be configured through 'var.enhanced_vpc_routing'
+  #checkov:skip=CKV_AWS_71:skipping 'Ensure Redshift Cluster logging is enabled' because it can be enabled through 'var.logging_enabled'
+  #checkov:skip=CKV_AWS_141:skipping 'Ensure that redshift cluster allowing version upgrade by default' because it can be enabled through 'var.allow_version_upgrade'
+  #checkov:skip=CKV_AWS_64:skipping 'Ensure all data stored in the Redshift cluster is securely encrypted at rest' because it can be configured through 'var.encrypted'
   count = local.enabled ? 1 : 0
 
   cluster_identifier = var.cluster_identifier == "" ? module.context.id : var.cluster_identifier
@@ -61,6 +65,7 @@ resource "aws_redshift_subnet_group" "default" {
 }
 
 resource "aws_redshift_parameter_group" "default" {
+  #checkov:skip=CKV_AWS_105:skipping 'Ensure Redshift uses SSL' because it can be configured through 'var.cluster_parameters'
   count = local.enabled ? 1 : 0
 
   name   = module.context.id
